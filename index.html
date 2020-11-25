@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <script src="sha256.js"></script>
+<form name="f">
+  <fieldset>
+  <legend>Enter any message to check its SHA-256 hash</legend>
+  <ul>
+    <li>
+      <label for="message">Message</label>
+      <textarea name="message" id="message" class="width-full">abc</textarea>
+    </li>
+    <li>
+      <label for="digest">Hash</label>
+      <input type="text"  name="digest" id="digest" readonly="" class="width-full">
+      <output class="small grey" id="time">0.565ms</output>
+    </li>
+    <li><small><i>Note SHA-256 hash of ‘abc’ should be:
+        ba7816bf&shy;8f01cfea&shy;414140de&shy;5dae2223&shy;b00361a3&shy;96177a9c&shy;b410ff61&shy;f20015ad</i></small></li>
+  </ul>
+  </fieldset>
+</form>
+<head>
+<script type="module"> /* functional demo */
+document.addEventListener('DOMContentLoaded', function(event) {
+    document.querySelector('#message').oninput = function() {
+        var t1 = performance.now();
+        var hash = Sha256.hash(this.value);
+        var t2 = performance.now();
+
+        document.querySelector('#digest').value = hash;
+        document.querySelector('#time').value = (t2-t1).toFixed(3)+'ms';
+    };
+
+    document.querySelector('#message').focus();
+    document.querySelector('#message').select();
+
+    document.querySelector('#message').oninput(); // initial hash call
+    // show source code
+    fetch('.//sha256.js')
+        .then(function(res) { return res.ok ? res.text() : res.status+' '+res.statusText; })
+        .then(function(txt) { document.querySelector('#src-code').textContent = txt; prettyPrint(); })
+        .catch(function(err) { document.querySelector('#error').textContent = err.message; });
+});
+</script>
+</head>
+<body>
+
+
+</body>
+</html> 
